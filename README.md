@@ -41,3 +41,7 @@ public class GrpcTagService {
 定时监听，如果服务挂了，或者服务的grpc端口修改，会发送监听事件，注入的channel重新初始化。
 保持channel及时的更新。
 
+
+注意：服务中的grpc端口在注册中心中的元数据是grpc.server.port这个格式
+
+请配合grpc-spring-cloud-starter来使用
