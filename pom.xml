@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.g3</groupId>
+  <artifactId>grpc-eureka-springmvc</artifactId>
+  <version>1.0.0</version>
+
+  <name>grpc-eureka-springmvc</name>
+  <!-- FIXME change it to the project's website -->
+  <url>http://www.example.com</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <java.version>1.7</java.version>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <spring.version>4.3.14.RELEASE</spring.version>
+    <netflix.ribbon.version>2.2.0</netflix.ribbon.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- eureka 服务发现 -->
+    <dependency>
+      <groupId>com.netflix.eureka</groupId>
+      <artifactId>eureka-client</artifactId>
+      <version>1.9.2</version>
+
+    </dependency>
+
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-stub</artifactId>
+      <version>1.10.0</version>
+    </dependency>
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-protobuf</artifactId>
+      <version>1.10.0</version>
+    </dependency>
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-netty</artifactId>
+      <version>1.10.0</version>
+    </dependency>
+
+
+    <!-- Ribbon 负载均衡 -->
+    <dependency>
+      <groupId>com.netflix.ribbon</groupId>
+      <artifactId>ribbon-core</artifactId>
+      <version>${netflix.ribbon.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.netflix.archaius</groupId>
+      <artifactId>archaius-core</artifactId>
+      <version>0.7.5</version>
+    </dependency>
+    <dependency>
+      <groupId>com.netflix.ribbon</groupId>
+      <artifactId>ribbon-loadbalancer</artifactId>
+      <version>${netflix.ribbon.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.netflix.ribbon</groupId>
+      <artifactId>ribbon-eureka</artifactId>
+      <version>${netflix.ribbon.version}</version>
+    </dependency>
+    <!-- 添加Servlet支持 -->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.1.0</version>
+      <scope>provided</scope>
+
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core</artifactId>
+      <version>${spring.version}</version>
+      <scope>provided</scope>
+
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
+      <version>${spring.version}</version>
+      <scope>provided</scope>
+
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+      <version>${spring.version}</version>
+      <scope>provided</scope>
+
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>${spring.version}</version>
+      <scope>provided</scope>
+
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+      <version>${spring.version}</version>
+      <scope>provided</scope>
+
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-web</artifactId>
+      <version>${spring.version}</version>
+      <scope>provided</scope>
+
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>${spring.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.25</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.16.18</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.2.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>1</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.5.1</version>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+          <testSource>${java.version}</testSource>
+          <testTarget>${java.version}</testTarget>
+        </configuration>
+      </plugin>
+      <!--配置生成Javadoc包-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.10.4</version>
+        <configuration>
+          <encoding>UTF-8</encoding>
+          <aggregate>true</aggregate>
+          <charset>UTF-8</charset>
+          <docencoding>UTF-8</docencoding>
+        </configuration>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!--配置生成源码包-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.0.1</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+
+</project>
