@@ -36,7 +36,6 @@ public class EurekaConfiguration {
     }
 
 
-
     @Bean
     public DiscoveryClientChannelFactory channelFactory(EurekaClient eurekaClient){
         return new DiscoveryClientChannelFactory(eurekaClient);
