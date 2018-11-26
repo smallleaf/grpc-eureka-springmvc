@@ -1,4 +1,19 @@
-## 本项目是用来非springboot项目注册到eureka注册中心，结合grpc,主要是做客户端用，服务可以采用springcloud。
+## 1.本项目用来解决的问题。
+1.让非springboot项目能在eureka-server注册中心注册服务，获取服务实例  
+2.支持grpc框架，序列化方式采用protobuf。提供了grpc注册中心，负载均衡，与spring容器整合
+
+注：我们依然使用springcloud来做注册中心服务，新的服务采用springcloud提供服务，老的项目采用改项目，使其能够支持eureka注册中心
+
+## 2.本项目只能用在消费端。服务者请采用springcloud，如果要结合grpc请参考我的另外一个项目。地址：
+
+## 3.项目待完成
+1.项目支持springcloud restful请求
+
+## 4.项目现在已经线上使用，经过半年时间的运行，每天大概500w的请求，现在暂时未发现问题。
+
+## 5.具体使用
+
+
 
 ### 1.新建资源文件eureka-client.properties
 ````

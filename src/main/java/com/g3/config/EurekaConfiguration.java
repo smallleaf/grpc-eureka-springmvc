@@ -10,7 +10,6 @@ import com.netflix.discovery.EurekaClient;
 import com.netflix.discovery.EurekaClientConfig;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
 /**
@@ -18,7 +17,6 @@ import org.springframework.core.annotation.Order;
  * @Description :
  * @Date : 2018/7/31
  */
-@Configuration
 public class EurekaConfiguration {
     @Bean
     @Order(1)
