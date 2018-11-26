@@ -66,8 +66,7 @@ public class GrpcTagService {
 
 
 ### 6.源码解析
-关于grpc有篇很好的博客[grpc源码解析](https://blog.csdn.net/omnispace/article/details/80167076)，大家可以去参考下。
-这里我只从
+这里我从
 
 1.如何获取eureka注册中心服务配置。   
 2.grpc是如何创建channel，并注入到spring bean的字段当中。    
@@ -80,6 +79,51 @@ public class GrpcTagService {
 第一步创建SpringEurekaClient,去服务获取服务，再根据服务名称去获取指定的服务配置信息。
 
 #### grpc是如何创建channel
+关于grpc有篇很好的博客[grpc源码解析](https://blog.csdn.net/omnispace/article/details/80167076)，大家可以去参考下。
+这里我主要是讲解grpc是如何创建channel的，我们只要拿到channel才能去使用grpc服务。
+![](http://m.qpic.cn/psb?/V11QGjwg27loKQ/o8kJpi6.JoRIiNSOOU5592Ng6c9954*a6BQaG3IPyH4!/b/dDQBAAAAAAAA&bo=8gc4BAAAAAADB.s!&rf=viewer_4)
+
+@GrpcClient在spring的生命周期当中，会去查找哪些字段属性被@GrpcClient给注解了，然后根据服务名去取Grpc的ip和端口信息。创建Channel
+
+
+#### grpc的channel如何做负载均衡
+![](http://m.qpic.cn/psb?/V11QGjwg27loKQ/1ReGwEiLz8uqLAgsmAHDXXnJxgFdd369ZeT.7tJycxg!/b/dDYBAAAAAAAA&bo=TgXYAwAAAAADB7I!&rf=viewer_4)
+1.NameResolver，start()会去eureka注册中心获取的服务配置，去根据对应的服务名称去拿，ip和端口。拿到之后就通过一定的策略放入subChannels.
+2.我们用channle(其实就是ManagedChannelImpl)进行grpc请求的时候，会去调用pickerCopy.pickSubchannel。也就是
+```aidl
+@Override
+    public PickResult pickSubchannel(PickSubchannelArgs args) {
+      if (list.size() > 0) {
+        return PickResult.withSubchannel(nextSubchannel());
+      }
+
+      if (status != null) {
+        return PickResult.withError(status);
+      }
+
+      return PickResult.withNoResult();
+    }
+    
+    
+    private Subchannel nextSubchannel() {
+      if (list.isEmpty()) {
+        throw new NoSuchElementException();
+      }
+      int size = list.size();
+
+      int i = indexUpdater.incrementAndGet(this);
+      if (i >= size) {
+        int oldi = i;
+        i %= size;
+        indexUpdater.compareAndSet(this, oldi, i);
+      }
+      return list.get(i);
+    }
+
+```
+从代码可以看出，每次去取subChannel是用的轮询，这样就形成了我们的负载均衡。
+
+### eureka注册中心提供的服务，如果挂掉，或者服务信息修改，例如grpc的监听端口修改，如何处理
 
 
 这四个方面去讲解。
