@@ -63,3 +63,15 @@ public class GrpcTagService {
 注意：服务中的grpc端口在注册中心中的元数据是grpc.server.port这个格式
 
 请配合grpc-spring-cloud-starter来使用
+
+
+### 6.源码解析
+关于grpc有篇很好的博客[grpc源码解析](https://blog.csdn.net/omnispace/article/details/80167076)，大家可以去参考下。
+这里我只从
+
+1.如何获取eureka注册中心服务配置。
+2.grpc是如何创建channel，并注入到spring bean的字段当中。
+3.grpc的channel如何做负载均衡。
+4.如果注册中心获取的服务挂了，怎么处理。
+
+这四个方面去讲解。
