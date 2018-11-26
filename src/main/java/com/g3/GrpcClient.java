@@ -6,7 +6,8 @@ import java.lang.annotation.*;
 
 /**
  * @author : yesheng
- * @Description :
+ * @Description : GrpcClient使用该注解可以根据服务名去取对应的grpc配置
+ * @see GrpcClientBeanPostProcessor
  * @Date : 2018/6/5
  */
 @Target({ElementType.FIELD})

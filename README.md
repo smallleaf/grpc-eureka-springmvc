@@ -66,8 +66,7 @@ public class GrpcTagService {
 
 
 ### 6.源码解析
-关于grpc有篇很好的博客[grpc源码解析](https://blog.csdn.net/omnispace/article/details/80167076)，大家可以去参考下。
-这里我只从
+这里我从
 
 1.如何获取eureka注册中心服务配置。   
 2.grpc是如何创建channel，并注入到spring bean的字段当中。    
@@ -80,6 +79,12 @@ public class GrpcTagService {
 第一步创建SpringEurekaClient,去服务获取服务，再根据服务名称去获取指定的服务配置信息。
 
 #### grpc是如何创建channel
+关于grpc有篇很好的博客[grpc源码解析](https://blog.csdn.net/omnispace/article/details/80167076)，大家可以去参考下。
+这里我主要是讲解grpc是如何创建channel的，我们只要拿到channel才能去使用grpc服务。
+![](http://m.qpic.cn/psb?/V11QGjwg27loKQ/o8kJpi6.JoRIiNSOOU5592Ng6c9954*a6BQaG3IPyH4!/b/dDQBAAAAAAAA&bo=8gc4BAAAAAADB.s!&rf=viewer_4)
+
+@GrpcClient在spring的生命周期当中，会去查找哪些字段属性被@GrpcClient给注解了，然后根据服务名去取Grpc的ip和端口信息。创建Channel
 
 
+#### grpc的channel如何做负载均衡
 这四个方面去讲解。
