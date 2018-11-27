@@ -3,17 +3,19 @@ package com.g3;
 import com.netflix.appinfo.EurekaInstanceConfig;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.appinfo.LeaseInfo;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
 /**
  * @author : yesheng
- * @Description :
+ * @Description : 从配置文件中获取配置信息
  * @Date : 2018/8/1
  */
-@Slf4j
 public class InstanceInfoFactory {
+
+    private Logger log = LoggerFactory.getLogger(InstanceInfoFactory.class);
 
     public InstanceInfo create(EurekaInstanceConfig config) {
         LeaseInfo.Builder leaseInfoBuilder = LeaseInfo.Builder.newBuilder()

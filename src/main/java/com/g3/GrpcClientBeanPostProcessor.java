@@ -22,6 +22,7 @@ import java.util.Map;
 /**
  * @author : yesheng
  * @Description :客户端注解注入对象
+ * @see GrpcClient
  * @Date : 2018/6/5
  */
 public class GrpcClientBeanPostProcessor implements BeanPostProcessor {
@@ -63,7 +64,6 @@ public class GrpcClientBeanPostProcessor implements BeanPostProcessor {
                 for (Field field : clazz.getDeclaredFields()) {
                     GrpcClient annotation = AnnotationUtils.getAnnotation(field, GrpcClient.class);
                     if (null != annotation) {
-
                         List<ClientInterceptor> list = Lists.newArrayList();
                         for (Class<? extends ClientInterceptor> clientInterceptorClass : annotation.interceptors()) {
                             ClientInterceptor clientInterceptor;

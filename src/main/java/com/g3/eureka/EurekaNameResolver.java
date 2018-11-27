@@ -10,7 +10,8 @@ import io.grpc.NameResolver;
 import io.grpc.Status;
 import io.grpc.internal.GrpcUtil;
 import io.grpc.internal.SharedResourceHolder;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.concurrent.GuardedBy;
 import java.net.InetSocketAddress;
@@ -26,13 +27,23 @@ import java.util.concurrent.ScheduledFuture;
  * @Description :
  * @Date : 2018/6/4
  */
-@Slf4j
 public class EurekaNameResolver extends NameResolver {
 
+    private Logger log = LoggerFactory.getLogger(EurekaNameResolver.class);
 
-
+    /**
+     * 服务名称
+     */
     private final String serviceName;
+
+    /**
+     * grpc端口的配置名称
+     */
     private final String portMetaData;
+
+    /**
+     *
+     */
     private final EurekaClient client;
     private final SharedResourceHolder.Resource<ScheduledExecutorService> timerServiceResource;
     private final SharedResourceHolder.Resource<ExecutorService> executorResource;
@@ -51,7 +62,6 @@ public class EurekaNameResolver extends NameResolver {
     private ExecutorService executor;
     @GuardedBy("this")
     private ScheduledFuture<?> resolutionTask;
-
 
     @GuardedBy("this")
     private List<InstanceInfo> serviceInstanceList;
@@ -115,6 +125,11 @@ public class EurekaNameResolver extends NameResolver {
     }
 
 
+    /**
+     * 异步执行
+     * 从eureka注册中的服务配置中，去取配置
+     * 如果配置发生变化，则修改channnel的address
+     */
     private final Runnable resolutionRunnable = new Runnable() {
         @Override
         public void run() {
@@ -172,6 +187,11 @@ public class EurekaNameResolver extends NameResolver {
     };
 
 
+    /**
+     * 判断获取的配置是否发生改变，有两个地方需要判断，一个是hostname，一个port
+     * @param newServiceInstanceList
+     * @return
+     */
     private boolean isNeedToUpdateServiceInstanceList(List<InstanceInfo> newServiceInstanceList) {
         if (serviceInstanceList.size() == newServiceInstanceList.size()) {
             for (InstanceInfo serviceInstance : serviceInstanceList) {
