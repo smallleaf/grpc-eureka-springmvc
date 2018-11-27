@@ -12,5 +12,11 @@ import java.util.List;
  */
 public interface GrpcChannelFactory {
 
+    /**
+     * 创建grpc channel
+     * @param name
+     * @param interceptors
+     * @return
+     */
     Channel createChannel(String name, List<ClientInterceptor> interceptors);
 }

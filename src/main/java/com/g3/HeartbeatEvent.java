@@ -4,7 +4,7 @@ import org.springframework.context.ApplicationEvent;
 
 /**
  * @author : yesheng
- * @Description :
+ * @Description : 监听事件，定时去监听服务器配置的变化
  * @Date : 2018/7/31
  */
 public class HeartbeatEvent extends ApplicationEvent {

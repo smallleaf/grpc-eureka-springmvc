@@ -6,7 +6,7 @@ import java.lang.annotation.*;
 
 /**
  * @author : yesheng
- * @Description :
+ * @Description : 注册开启客户端从注册中心配置
  * @Date : 2018/7/31
  */
 @Target(ElementType.TYPE)

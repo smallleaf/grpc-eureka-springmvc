@@ -9,7 +9,8 @@ import io.grpc.ClientInterceptor;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.util.RoundRobinLoadBalancerFactory;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 
 import java.util.List;
@@ -19,11 +20,14 @@ import java.util.List;
  * @Description :
  * @Date : 2018/6/5
  */
-@Slf4j
 public class DiscoveryClientChannelFactory implements GrpcChannelFactory {
 
-    private static final String EUREKA = "eureka://";
+    private Logger log = LoggerFactory.getLogger(DiscoveryClientChannelFactory.class);
 
+    private static final String EUREKA = "eureka://";
+    /**
+     * grpc的端口命名
+     */
     private static final String GRPC_PORT = "grpc.server.port";
 
     private EurekaClient discoveryClient;

@@ -22,5 +22,9 @@ public @interface GrpcClient {
      */
     String value();
 
+    /**
+     * 全局拦截器
+     * @return
+     */
     Class<? extends ClientInterceptor>[] interceptors() default {};
 }

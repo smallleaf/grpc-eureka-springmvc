@@ -14,7 +14,7 @@ import org.springframework.core.annotation.Order;
 
 /**
  * @author : yesheng
- * @Description :
+ * @Description : eureka客户端配置
  * @Date : 2018/7/31
  */
 public class EurekaConfiguration {
