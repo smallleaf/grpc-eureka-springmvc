@@ -89,7 +89,7 @@ public class GrpcTagService {
 
 #### grpc的channel如何做负载均衡
 ![](http://m.qpic.cn/psb?/V11QGjwg27loKQ/1ReGwEiLz8uqLAgsmAHDXXnJxgFdd369ZeT.7tJycxg!/b/dDYBAAAAAAAA&bo=TgXYAwAAAAADB7I!&rf=viewer_4)
-1.NameResolver，start()会去eureka注册中心获取的服务配置，去根据对应的服务名称去拿，ip和端口。拿到之后就通过一定的策略放入subChannels.
+1.NameResolver，start()会去eureka注册中心获取的服务配置，去根据对应的服务名称去拿，ip和端口。拿到之后就通过一定的策略放入subChannels. 
 2.我们用channle(其实就是ManagedChannelImpl)进行grpc请求的时候，会去调用pickerCopy.pickSubchannel。也就是
 ```aidl
 @Override
@@ -125,7 +125,13 @@ public class GrpcTagService {
 从代码可以看出，每次去取subChannel是用的轮询，这样就形成了我们的负载均衡。
 
 ### eureka注册中心提供的服务，如果挂掉，或者服务信息修改，例如grpc的监听端口修改，如何处理
+![](http://m.qpic.cn/psb?/V11QGjwg27loKQ/8RF9CjHCCaJi2KOPQsbNRKjL47e32neXb5QDqPD9WAY!/b/dFQBAAAAAAAA&bo=5gXaAwAAAAADBxg!&rf=viewer_4)
+
+1.DiscoveryClient,会定时去注册中心更新配置信息，默认是30秒。    
+2.心跳事件一直保持这个监听，如果grpc服务挂了，或者grpc的服务端口发生了改变了。那么取的配置就发生了改变了，于是listener
+重新初始化地址信息。这样服务重启的时间 就能及时更新。 
 
 
-#### grpc的channel如何做负载均衡
-这四个方面去讲解。
+
+
+
