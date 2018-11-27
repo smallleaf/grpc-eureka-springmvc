@@ -86,6 +86,7 @@ public class GrpcTagService {
 @GrpcClient在spring的生命周期当中，会去查找哪些字段属性被@GrpcClient给注解了，然后根据服务名去取Grpc的ip和端口信息。创建Channel
 
 
+
 #### grpc的channel如何做负载均衡
 ![](http://m.qpic.cn/psb?/V11QGjwg27loKQ/1ReGwEiLz8uqLAgsmAHDXXnJxgFdd369ZeT.7tJycxg!/b/dDYBAAAAAAAA&bo=TgXYAwAAAAADB7I!&rf=viewer_4)
 1.NameResolver，start()会去eureka注册中心获取的服务配置，去根据对应的服务名称去拿，ip和端口。拿到之后就通过一定的策略放入subChannels.
@@ -126,4 +127,5 @@ public class GrpcTagService {
 ### eureka注册中心提供的服务，如果挂掉，或者服务信息修改，例如grpc的监听端口修改，如何处理
 
 
+#### grpc的channel如何做负载均衡
 这四个方面去讲解。
