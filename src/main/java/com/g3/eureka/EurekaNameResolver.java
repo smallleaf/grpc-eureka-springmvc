@@ -19,6 +19,7 @@ import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -69,6 +70,11 @@ public class EurekaNameResolver extends NameResolver {
 
     @GuardedBy("this")
     private InetSocketAddress defaultAddress;
+
+    /**
+     * 服务缓存
+     */
+    private ConcurrentHashMap<String,Application> applicationCache = new ConcurrentHashMap<>();
 
 
     public EurekaNameResolver(EurekaClient client, URI targetUri, String portMetaData,InetSocketAddress defaultAddress) {
@@ -156,23 +162,25 @@ public class EurekaNameResolver extends NameResolver {
                 try {
                     Application application = client.getApplication(serviceName);
                     if(application == null){
-                        if(defaultAddress != null){
+                        application = applicationCache.get(serviceName);
+                        if(application == null && defaultAddress != null){
                             List<EquivalentAddressGroup> equivalentAddressGroups = Lists.newArrayList();
                             EquivalentAddressGroup addressGroup = new EquivalentAddressGroup(defaultAddress, Attributes.EMPTY);
                             equivalentAddressGroups.add(addressGroup);
                             savedListener.onAddresses(equivalentAddressGroups, Attributes.EMPTY);
-                            log.info("application empty ,use default address .....");
+                            log.error("application empty ,use default address .....");
+                            return;
+                        }else{
+                            savedListener.onError(Status.UNAVAILABLE.withDescription("the service name cannot  be find "+serviceName));
                             return;
                         }
-                        savedListener.onError(Status.UNAVAILABLE.withDescription("the service name cannot  be find "+serviceName));
-                        return;
                     }
+                    applicationCache.put(serviceName,application);
                     newServiceInstanceList = application.getInstances();
                 } catch (Exception e) {
                     savedListener.onError(Status.UNAVAILABLE.withCause(e));
                     return;
                 }
-
                 if (newServiceInstanceList != null && newServiceInstanceList.size()>0) {
                     if (isNeedToUpdateServiceInstanceList(newServiceInstanceList)) {
                         serviceInstanceList = newServiceInstanceList;

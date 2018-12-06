@@ -115,12 +115,18 @@ public class GrpcTagService {
 
 
 ### 更新日志
-#### v1.2.0  
-1.@GrpcClient名称填写错误了，导致请求报错
-两点改善：
-在@GrpcClient 标志的字段进行初始化的时，候进行校验，如果错误直接报错。 
-提供更加详细的日志输出。
+#### v1.3.0  
 
-2.做了一个默认的gprc服务配置，防止意外的情况，做一个最妥协的处理方案，并且这个默认的配置，可以用于本地直连做单元测试试用。
+1.添加本地可以直接连接grpc服务，方便本地测试
+2.直连的grpc服务地址，可以作为eureka备份地址，如果刚启动eureka注册中心挂掉，从本地服务地址去拿，当然如果是服务启动中，eureka注册中心服务挂掉了，会直接从本地缓存中去拿已经存在的服务信息：
+eureka-client.properties添加如下配置
+```aidl
+# 注册的类型，eureka,local,eureka表示使用eureka注册中心，local本地直接连接
+rpc.register.type=eureka
+
+# grpc服务地址，
+rpc.server.local=127.0.0.1:8366
+
+```
 
 
