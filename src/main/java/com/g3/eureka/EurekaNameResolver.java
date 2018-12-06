@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
+import com.netflix.discovery.shared.Application;
 import io.grpc.Attributes;
 import io.grpc.EquivalentAddressGroup;
 import io.grpc.NameResolver;
@@ -66,14 +67,18 @@ public class EurekaNameResolver extends NameResolver {
     @GuardedBy("this")
     private List<InstanceInfo> serviceInstanceList;
 
+    @GuardedBy("this")
+    private InetSocketAddress defaultAddress;
 
-    public EurekaNameResolver(EurekaClient client, URI targetUri, String portMetaData) {
+
+    public EurekaNameResolver(EurekaClient client, URI targetUri, String portMetaData,InetSocketAddress defaultAddress) {
         this.portMetaData = portMetaData;
         serviceName = targetUri.getAuthority();
         this.client = client;
         this.timerServiceResource = GrpcUtil.TIMER_SERVICE;
         this.executorResource = GrpcUtil.SHARED_CHANNEL_EXECUTOR;
         this.serviceInstanceList = Lists.newArrayList();
+        this.defaultAddress = defaultAddress;
 
     }
 
@@ -149,7 +154,20 @@ public class EurekaNameResolver extends NameResolver {
             try {
                 List<InstanceInfo> newServiceInstanceList;
                 try {
-                    newServiceInstanceList = client.getApplication(serviceName).getInstances();
+                    Application application = client.getApplication(serviceName);
+                    if(application == null){
+                        if(defaultAddress != null){
+                            List<EquivalentAddressGroup> equivalentAddressGroups = Lists.newArrayList();
+                            EquivalentAddressGroup addressGroup = new EquivalentAddressGroup(defaultAddress, Attributes.EMPTY);
+                            equivalentAddressGroups.add(addressGroup);
+                            savedListener.onAddresses(equivalentAddressGroups, Attributes.EMPTY);
+                            log.info("application empty ,use default address .....");
+                            return;
+                        }
+                        savedListener.onError(Status.UNAVAILABLE.withDescription("the service name cannot  be find "+serviceName));
+                        return;
+                    }
+                    newServiceInstanceList = application.getInstances();
                 } catch (Exception e) {
                     savedListener.onError(Status.UNAVAILABLE.withCause(e));
                     return;

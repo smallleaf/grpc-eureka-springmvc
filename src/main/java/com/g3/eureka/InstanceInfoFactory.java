@@ -1,4 +1,4 @@
-package com.g3;
+package com.g3.eureka;
 
 import com.netflix.appinfo.EurekaInstanceConfig;
 import com.netflix.appinfo.InstanceInfo;

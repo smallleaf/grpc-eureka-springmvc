@@ -1,5 +1,6 @@
-package com.g3;
+package com.g3.eureka;
 
+import com.g3.HeartbeatEvent;
 import com.netflix.appinfo.ApplicationInfoManager;
 import com.netflix.discovery.DiscoveryClient;
 import com.netflix.discovery.EurekaClientConfig;

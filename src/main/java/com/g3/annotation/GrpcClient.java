@@ -1,5 +1,6 @@
-package com.g3;
+package com.g3.annotation;
 
+import com.g3.support.GrpcClientBeanPostProcessor;
 import io.grpc.ClientInterceptor;
 
 import java.lang.annotation.*;

@@ -1,7 +1,9 @@
-package com.g3;
+package com.g3.eureka;
 
-import com.g3.eureka.EurekaNameResolver;
-import com.g3.eureka.EurekaNameResolverProvider;
+import com.g3.GrpcChannelFactory;
+import com.g3.HeartbeatEvent;
+import com.g3.HeartbeatMonitor;
+import com.g3.RpcInstanceConfig;
 import com.google.common.collect.Lists;
 import com.netflix.discovery.EurekaClient;
 import io.grpc.Channel;
@@ -13,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 
+import java.net.InetSocketAddress;
 import java.util.List;
 
 /**
@@ -20,9 +23,9 @@ import java.util.List;
  * @Description :
  * @Date : 2018/6/5
  */
-public class DiscoveryClientChannelFactory implements GrpcChannelFactory {
+public class EurekaClientChannelFactory implements GrpcChannelFactory {
 
-    private Logger log = LoggerFactory.getLogger(DiscoveryClientChannelFactory.class);
+    private Logger log = LoggerFactory.getLogger(EurekaClientChannelFactory.class);
 
     private static final String EUREKA = "eureka://";
     /**
@@ -36,8 +39,24 @@ public class DiscoveryClientChannelFactory implements GrpcChannelFactory {
 
     private List<EurekaNameResolver> discoveryClientNameResolvers = Lists.newArrayList();
 
-    public DiscoveryClientChannelFactory(EurekaClient discoveryClient){
+    /**
+     * 默认的grpc地址
+     */
+    private InetSocketAddress defaultAddress;
+
+
+    public EurekaClientChannelFactory(EurekaClient discoveryClient){
         this.discoveryClient = discoveryClient;
+        String localServer = RpcInstanceConfig.getInstance().getRpcLocalServer();
+        if(localServer != null){
+            try {
+                String[] address = localServer.split(":");
+                defaultAddress  = new InetSocketAddress(address[0],Integer.valueOf(address[1]));
+            }catch (Exception e){
+                log.error(e.getMessage());
+            }
+        }
+
     }
 
 
@@ -63,5 +82,9 @@ public class DiscoveryClientChannelFactory implements GrpcChannelFactory {
                 .usePlaintext(true)
                 .build();
         return channel;
+    }
+
+    public InetSocketAddress getDefaultAddress() {
+        return defaultAddress;
     }
 }

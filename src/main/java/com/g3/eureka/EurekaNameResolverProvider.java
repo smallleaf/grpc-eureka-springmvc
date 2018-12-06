@@ -1,6 +1,5 @@
 package com.g3.eureka;
 
-import com.g3.DiscoveryClientChannelFactory;
 import com.netflix.discovery.EurekaClient;
 import io.grpc.Attributes;
 import io.grpc.NameResolver;
@@ -17,14 +16,15 @@ import java.net.URI;
 public class EurekaNameResolverProvider extends NameResolverProvider {
 
     protected static final String EUREKA = "eureka";
+
     private final String portMetaData;
 
     private EurekaClient client;
 
-    private DiscoveryClientChannelFactory discoveryClientChannelFactory;
+    private EurekaClientChannelFactory discoveryClientChannelFactory;
 
 
-    public EurekaNameResolverProvider(EurekaClient client, String portMetaData, DiscoveryClientChannelFactory discoveryClientChannelFactory) {
+    public EurekaNameResolverProvider(EurekaClient client, String portMetaData, EurekaClientChannelFactory discoveryClientChannelFactory) {
         this.client = client;
         this.portMetaData = portMetaData;
         this.discoveryClientChannelFactory = discoveryClientChannelFactory;
@@ -43,7 +43,7 @@ public class EurekaNameResolverProvider extends NameResolverProvider {
     @Nullable
     @Override
     public NameResolver newNameResolver(URI targetUri, Attributes params) {
-        EurekaNameResolver eurekaNameResolver = new EurekaNameResolver(client, targetUri, portMetaData);
+        EurekaNameResolver eurekaNameResolver = new EurekaNameResolver(client, targetUri, portMetaData,discoveryClientChannelFactory.getDefaultAddress());
         discoveryClientChannelFactory.addEurekaNameResolverProvider(eurekaNameResolver);
         return eurekaNameResolver;
     }

@@ -1,5 +1,7 @@
-package com.g3;
+package com.g3.support;
 
+import com.g3.GrpcChannelFactory;
+import com.g3.annotation.GrpcClient;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.grpc.Channel;
