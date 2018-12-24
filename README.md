@@ -119,7 +119,7 @@ public class GrpcTagService {
 1.account-core:提供服务，注册到注册中心，依赖于account-model。   
 2.account-model:protobuf文件编写，实体类。   
 3.account-client：提供给其他服务使用，其他服务只需要调用此jar，然后调用方法就行了，不需要关注底层如何实现，
-地城全部有服务端的人员编写来控制。依赖于account-model   
+底层全部由服务端的人员编写来控制。依赖于account-model   
 
 
 
