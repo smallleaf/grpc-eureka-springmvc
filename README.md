@@ -113,6 +113,16 @@ public class GrpcTagService {
 1.如果eureka中心挂了,此时是收不到获取注册中心配置的监听事件的，只要grpc服务没有挂，grpc服务的信息，依然保持在本地，依然可以使用。
 
 
+### 如何使用
+本项目使用来做客户端用的，与服务端放在一起，打包成单独的jar，提供给其他的服务。   
+例如账号中心：多模块
+1.account-core:提供服务，注册到注册中心，依赖于account-model。   
+2.account-model:protobuf文件编写，实体类。   
+3.account-client：提供给其他服务使用，其他服务只需要调用此jar，然后调用方法就行了，不需要关注底层如何实现，
+地城全部有服务端的人员编写来控制。   
+
+
+
 
 ### 更新日志
 #### v1.3.0  
@@ -128,5 +138,8 @@ rpc.register.type=eureka
 rpc.server.local=127.0.0.1:8366
 
 ```
+
+
+
 
 
