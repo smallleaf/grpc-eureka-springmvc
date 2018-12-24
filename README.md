@@ -115,11 +115,11 @@ public class GrpcTagService {
 
 ### 如何使用
 本项目使用来做客户端用的，与服务端放在一起，打包成单独的jar，提供给其他的服务。   
-例如账号中心：多模块
+例如账号中心：多模块  
 1.account-core:提供服务，注册到注册中心，依赖于account-model。   
 2.account-model:protobuf文件编写，实体类。   
 3.account-client：提供给其他服务使用，其他服务只需要调用此jar，然后调用方法就行了，不需要关注底层如何实现，
-地城全部有服务端的人员编写来控制。   
+地城全部有服务端的人员编写来控制。依赖于account-model   
 
 
 
