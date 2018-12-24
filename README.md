@@ -15,7 +15,7 @@
 4.支持zk注册中心
 
 
-### 4.项目现在已经线上使用，经过半年时间的运行，每天大概100w的请求，现在暂时未发现问题。
+### 4.项目现在已经线上使用，经过半年时间的运行，每天大概500w的请求。
 
 ### 5.使用方法
 
@@ -120,7 +120,7 @@ public class GrpcTagService {
 2.account-model:protobuf文件编写，实体类。   
 3.account-client：提供给其他服务使用，其他服务只需要调用此jar，然后调用方法就行了，不需要关注底层如何实现，
 底层全部由服务端的人员编写来控制。依赖于account-model   
-
+![](http://m.qpic.cn/psb?/V11QGjwg27loKQ/RNvCcENUhkIIYCeWI2ZhIb2a3C65MLBDcwTdSsLm5ho!/b/dLwAAAAAAAAA&bo=pgg4BAAAAAARB6I!&rf=viewer_4)
 
 
 
