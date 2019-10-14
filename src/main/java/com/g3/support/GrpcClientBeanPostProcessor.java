@@ -1,6 +1,7 @@
 package com.g3.support;
 
 import com.g3.GrpcChannelFactory;
+import com.g3.RpcInstanceConfig;
 import com.g3.annotation.GrpcClient;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -81,7 +83,13 @@ public class GrpcClientBeanPostProcessor implements BeanPostProcessor {
                             list.add(clientInterceptor);
                         }
 
-                        Channel channel = channelFactory.createChannel(annotation.value(), list);
+                        Channel channel ;
+                        String serviceName = RpcInstanceConfig.getInstance().getServiceName();
+                        if(StringUtils.isEmpty(serviceName)){
+                            channel = channelFactory.createChannel(annotation.value(), list);
+                        }else{
+                            channel = channelFactory.createChannel(serviceName, list);
+                        }
                         ReflectionUtils.makeAccessible(field);
                         ReflectionUtils.setField(field, target, channel);
                     }

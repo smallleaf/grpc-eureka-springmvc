@@ -20,5 +20,7 @@ public class GrpcProperties {
 
     public static final String rpcRegisterType = "rpc.register.type";
 
+    public static final String serviceName = "eureka.service.name";
+
 
 }
