@@ -34,5 +34,8 @@ public class RpcInstanceConfig {
         return configInstance.getStringProperty(GrpcProperties.rpcServerLocal,null).get();
     }
 
+    public String getServiceName(){
+        return configInstance.getStringProperty(GrpcProperties.serviceName,null).get();
+    }
 
 }
